@@ -73,6 +73,9 @@ def ReadURLFile(steam_dir, path):
         if line.startswith(f"{search_app_id_prefix}"):
             app_id = line[len(search_app_id_prefix):]
         elif line.startswith(f"{iconfile_prefix}"):
+            if os.path.isfile(line[len(iconfile_prefix):]):
+                # Stop if the icon file exists on computer
+                return
             ic_split = line.split("\\")
             icon_file_name = ic_split[len(ic_split)-1]
             icon_id = icon_file_name.split(".")
@@ -118,6 +121,8 @@ def main():
             if app_id:
                 #print(URL_Files[app_id])
                 DownloadAndFixIcon(steam_dir, app_id)
+
+    print(f"Fixed {Shortcuts_directory} Steam shortcuts.")
     
 
 if __name__ == "__main__":
